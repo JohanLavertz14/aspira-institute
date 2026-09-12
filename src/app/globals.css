@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-white text-ink antialiased;
+  font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Sarabun', system-ui, sans-serif;
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800;
+  }
+  .btn-outline {
+    @apply btn border border-brand-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-brand-50;
+  }
+  .btn-ghost {
+    @apply btn text-ink-soft hover:bg-brand-50 hover:text-brand-700;
+  }
+  .btn-danger {
+    @apply btn border border-red-200 bg-white text-red-600 hover:bg-red-50;
+  }
+  .btn-sm {
+    @apply px-3.5 py-1.5 text-xs;
+  }
+
+  .card {
+    @apply rounded-2xl border border-ink-line bg-white shadow-card;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+  .input {
+    @apply w-full rounded-xl border border-ink-line bg-white px-3.5 py-2.5 text-sm text-ink
+           outline-none transition placeholder:text-ink-soft/60
+           focus:border-brand-400 focus:ring-4 focus:ring-brand-100;
+  }
+  .textarea {
+    @apply input min-h-[110px] resize-y;
+  }
+  .select {
+    @apply input appearance-none bg-[length:16px] pr-9;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+  .badge-brand {
+    @apply badge bg-brand-50 text-brand-700;
+  }
+  .badge-green {
+    @apply badge bg-emerald-50 text-emerald-700;
+  }
+  .badge-amber {
+    @apply badge bg-amber-50 text-amber-700;
+  }
+  .badge-gray {
+    @apply badge bg-gray-100 text-gray-600;
+  }
+  .badge-red {
+    @apply badge bg-red-50 text-red-600;
+  }
+
+  .table-basic {
+    @apply w-full text-left text-sm;
+  }
+  .table-basic thead th {
+    @apply whitespace-nowrap border-b border-ink-line px-4 py-3 text-xs font-semibold uppercase tracking-wide text-ink-soft;
+  }
+  .table-basic tbody td {
+    @apply border-b border-ink-line/70 px-4 py-3 align-middle;
+  }
+  .table-basic tbody tr:hover {
+    @apply bg-brand-50/40;
+  }
+
+  .prose-th p {
+    @apply mb-3 leading-relaxed text-ink-soft;
+  }
+}
+
+/* แถบเลื่อนบาง ๆ ให้เข้ากับดีไซน์ */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: #f3d3de;
+  border-radius: 999px;
+}

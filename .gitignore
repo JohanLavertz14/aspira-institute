@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env
+*.db
+*.db-journal
+public/uploads/slips/*
+!public/uploads/slips/.gitkeep
+public/uploads/branding/*
+!public/uploads/branding/.gitkeep
+public/uploads/sheets/*
+!public/uploads/sheets/.gitkeep
+.DS_Store
+next-env.d.ts
+tsconfig.tsbuildinfo
