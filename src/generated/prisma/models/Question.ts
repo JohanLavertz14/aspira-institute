@@ -476,6 +476,7 @@ export type QuestionCreateOrConnectWithoutQuizInput = {
 
 export type QuestionCreateManyQuizInputEnvelope = {
   data: Prisma.QuestionCreateManyQuizInput | Prisma.QuestionCreateManyQuizInput[]
+  skipDuplicates?: boolean
 }
 
 export type QuestionUpsertWithWhereUniqueWithoutQuizInput = {
@@ -1355,6 +1356,7 @@ export type QuestionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data used to create many Questions.
    */
   data: Prisma.QuestionCreateManyInput | Prisma.QuestionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1373,6 +1375,7 @@ export type QuestionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many Questions.
    */
   data: Prisma.QuestionCreateManyInput | Prisma.QuestionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -9,18 +9,21 @@
 
 ## 1. ติดตั้งและรัน
 
-ต้องมี Node.js เวอร์ชัน 20 ขึ้นไป
+ต้องมี Node.js เวอร์ชัน 20 ขึ้นไป และฐานข้อมูล PostgreSQL หนึ่งตัว
+วิธีที่เร็วที่สุดคือสร้างฐานข้อมูลฟรีที่ Neon แล้วคัดลอก connection string มาใช้
 
 ```bash
 npm install
 cp .env.example .env      # Windows ใช้ copy .env.example .env
-npm run setup             # สร้างฐานข้อมูล + ใส่ข้อมูลตัวอย่าง
+# แก้ .env ใส่ DATABASE_URL ของ PostgreSQL และสุ่มค่า AUTH_SECRET
+npm run setup             # สร้างตาราง + ใส่ข้อมูลตัวอย่าง
 npm run dev
 ```
 
 เปิด http://localhost:3000
 
 > `npm run setup` ครั้งแรกต้องต่ออินเทอร์เน็ตได้ เพราะ Prisma จะดาวน์โหลดเครื่องมือของตัวเองมาเก็บไว้
+> และวิธี deploy บน Vercel อยู่ที่หัวข้อ 7
 
 ### บัญชีสำหรับทดลองใช้
 
@@ -125,7 +128,7 @@ public/uploads/          ไฟล์ที่อัปโหลด (สลิ�
 | `npm start` | รันโหมดใช้งานจริง (ต้อง build ก่อน) |
 | `npm run db:push` | อัปเดตโครงสร้างฐานข้อมูลตาม schema |
 | `npm run db:seed` | ใส่ข้อมูลตัวอย่างใหม่ |
-| `npm run db:reset` | ล้างฐานข้อมูลแล้ว seed ใหม่ทั้งหมด |
+| `npm run db:reset` | ล้างฐานข้อมูลแล้ว seed ใหม่ทั้งหมด (ห้ามใช้กับ production) |
 | `npm run db:seed:chem` | สร้างหรืออัปเดตคอร์ส Foundation for Chemistry จากไฟล์ `prisma/seed-foundation-chemistry.ts` (รันซ้ำได้) |
 
 ### จัดการบัญชีแอดมิน
@@ -160,20 +163,62 @@ public/uploads/branding/        โลโก้และ QR พร้อมเ�
 
 ---
 
-## 7. ตอนขึ้นเซิร์ฟเวอร์จริง
+## 7. Deploy บน Vercel
 
-ตอนนี้ใช้ SQLite (ไฟล์ `prisma/dev.db`) ซึ่งพอสำหรับเริ่มต้นและทดสอบ ถ้ามีนักเรียนหลายร้อยคนขึ้นไป
-แนะนำย้ายไป PostgreSQL ซึ่งแก้แค่ 3 จุด
+เว็บนี้ใช้ PostgreSQL (Neon) เป็นฐานข้อมูล และ Vercel Blob เก็บไฟล์อัปโหลด
+เพราะระบบไฟล์ของ Vercel เขียนไม่ได้และถูกล้างทุกครั้งที่ deploy
 
-1. `prisma/schema.prisma` เปลี่ยน `provider = "sqlite"` เป็น `"postgresql"`
-2. `src/lib/db.ts` เปลี่ยนจาก `@prisma/adapter-better-sqlite3` เป็น `@prisma/adapter-pg`
-3. เปลี่ยน `DATABASE_URL` ใน `.env` แล้วรัน `npm run db:push`
+### ขั้นตอนตั้งค่าบน Vercel (ทำครั้งเดียว)
 
-**เรื่องไฟล์อัปโหลด** ตอนนี้เก็บลงโฟลเดอร์ `public/uploads` ถ้า deploy บน Vercel หรือแพลตฟอร์มที่ไฟล์หายเมื่อ redeploy
-ให้แก้ฟังก์ชันเดียวคือ `saveUploadedFile` ใน `src/lib/upload.ts` ให้อัปโหลดขึ้น S3 หรือ Cloudflare R2 แทน
-ส่วนอื่นของระบบไม่ต้องแก้
+1. เปิดโปรเจกต์ใน Vercel ไปที่แท็บ **Storage** กด Create Database เลือก **Neon (Postgres)**
+   แล้วกด Connect เข้ากับโปรเจกต์ Vercel จะตั้งค่า `DATABASE_URL` ให้อัตโนมัติ
+2. ที่แท็บ **Storage** เดิม กด Create เลือก **Blob** แล้ว Connect เข้ากับโปรเจกต์
+   Vercel จะตั้งค่า `BLOB_READ_WRITE_TOKEN` ให้อัตโนมัติ
+3. ไปที่ **Settings → Environment Variables** เพิ่ม `AUTH_SECRET` เอง
+   สุ่มค่าด้วยคำสั่ง
 
-**เรื่องบัตรเครดิต** โครงหลังบ้านเตรียมไว้แล้ว (ฟิลด์ `method = CARD` และสวิตช์เปิดใช้งานในหน้าตั้งค่า)
+   ```
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+
+   ห้ามใช้ค่าเดียวกับในเครื่องพัฒนา
+
+### สร้างตารางและข้อมูลตั้งต้นในฐานข้อมูล production
+
+ดึงค่า env จาก Vercel มาไว้ในเครื่อง แล้วสั่งงานฐานข้อมูลจากเครื่องตัวเอง
+
+```
+npx vercel env pull .env.production.local
+```
+
+จากนั้นรันสามคำสั่งนี้โดยชี้ `DATABASE_URL` ไปที่ Neon (แทน <url> ด้วย connection string ของ Neon)
+
+```
+DATABASE_URL="<url>" npm run db:push          สร้างตารางทั้งหมด
+DATABASE_URL="<url>" npm run db:seed:chem     สร้างวิชาเคมีและคอร์ส Foundation for Chemistry
+DATABASE_URL="<url>" npm run admin -- create อีเมล 'รหัสผ่าน' 'ชื่อ'
+```
+
+**ห้ามรัน `npm run db:seed` หรือ `npm run db:reset` ใส่ฐานข้อมูล production**
+สองคำสั่งนั้นล้างข้อมูลทั้งหมดแล้วใส่ข้อมูลตัวอย่างแทน ใช้ได้เฉพาะกับฐานข้อมูลสำหรับพัฒนา
+
+### หลัง deploy เสร็จ
+
+เข้า `/admin` บนเว็บจริง แล้วทำสามอย่างนี้ ไฟล์จะถูกเก็บลง Blob อัตโนมัติ
+
+- หน้า **ตั้งค่าเว็บ** อัปโหลดโลโก้ รูป QR พร้อมเพย์ และกรอกเลขบัญชีกับข้อมูลติดต่อ
+- หน้า **จัดการคอร์ส** อัปโหลดชีท `chemistry-foundation.pdf` ที่ช่องเอกสารประกอบคอร์ส
+  (ไฟล์ในเครื่องไม่ได้ถูก push ขึ้น git จึงไม่มีอยู่บนเซิร์ฟเวอร์)
+- ใส่รหัสวิดีโอ Vimeo ในแต่ละบทเรียน
+
+### ฐานข้อมูลสำหรับพัฒนาบนเครื่อง
+
+แนะนำสร้างฐานข้อมูล Neon อีกตัวแยกไว้สำหรับพัฒนา แล้วใส่ connection string ใน `.env`
+เพื่อไม่ให้เผลอแก้ข้อมูลจริง ไฟล์ `prisma/dev.db` ที่เคยใช้ตอนเป็น SQLite ลบทิ้งได้แล้ว
+
+### เรื่องบัตรเครดิต
+
+โครงหลังบ้านเตรียมไว้แล้ว (ฟิลด์ `method = CARD` และสวิตช์เปิดใช้งานในหน้าตั้งค่า)
 เมื่อพร้อมต่อผู้ให้บริการรับชำระเงิน เช่น Omise หรือ Stripe ให้เพิ่มขั้นตอนสร้าง charge
 แล้วเปลี่ยนสถานะคำสั่งซื้อเป็น `PAID` พร้อมสร้าง Enrollment เหมือนที่ฟังก์ชัน `approvePaymentAction` ทำอยู่
 
@@ -181,4 +226,5 @@ public/uploads/branding/        โลโก้และ QR พร้อมเ�
 
 ## 8. เทคโนโลยีที่ใช้
 
-Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS · Prisma 7 · SQLite · JWT ใน httpOnly cookie
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS · Prisma 7 ·
+PostgreSQL (Neon) · Vercel Blob · JWT ใน httpOnly cookie

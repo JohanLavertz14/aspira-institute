@@ -14,7 +14,14 @@ export default async function AdminStudentsPage({
   const students = await prisma.user.findMany({
     where: {
       role: 'STUDENT',
-      ...(q ? { OR: [{ name: { contains: q } }, { email: { contains: q } }] } : {}),
+      ...(q
+        ? {
+            OR: [
+              { name: { contains: q, mode: 'insensitive' as const } },
+              { email: { contains: q, mode: 'insensitive' as const } },
+            ],
+          }
+        : {}),
     },
     orderBy: { createdAt: 'desc' },
     include: { _count: { select: { enrollments: true, orders: true } } },

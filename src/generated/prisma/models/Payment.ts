@@ -616,6 +616,7 @@ export type PaymentCreateOrConnectWithoutReviewedByInput = {
 
 export type PaymentCreateManyReviewedByInputEnvelope = {
   data: Prisma.PaymentCreateManyReviewedByInput | Prisma.PaymentCreateManyReviewedByInput[]
+  skipDuplicates?: boolean
 }
 
 export type PaymentUpsertWithWhereUniqueWithoutReviewedByInput = {
@@ -684,6 +685,7 @@ export type PaymentCreateOrConnectWithoutOrderInput = {
 
 export type PaymentCreateManyOrderInputEnvelope = {
   data: Prisma.PaymentCreateManyOrderInput | Prisma.PaymentCreateManyOrderInput[]
+  skipDuplicates?: boolean
 }
 
 export type PaymentUpsertWithWhereUniqueWithoutOrderInput = {
@@ -1572,6 +1574,7 @@ export type PaymentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Payments.
    */
   data: Prisma.PaymentCreateManyInput | Prisma.PaymentCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1590,6 +1593,7 @@ export type PaymentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Payments.
    */
   data: Prisma.PaymentCreateManyInput | Prisma.PaymentCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

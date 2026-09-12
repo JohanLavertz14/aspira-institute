@@ -424,6 +424,7 @@ export type ChoiceCreateOrConnectWithoutQuestionInput = {
 
 export type ChoiceCreateManyQuestionInputEnvelope = {
   data: Prisma.ChoiceCreateManyQuestionInput | Prisma.ChoiceCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type ChoiceUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -1203,6 +1204,7 @@ export type ChoiceCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Choices.
    */
   data: Prisma.ChoiceCreateManyInput | Prisma.ChoiceCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1221,6 +1223,7 @@ export type ChoiceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Choices.
    */
   data: Prisma.ChoiceCreateManyInput | Prisma.ChoiceCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

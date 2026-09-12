@@ -10,12 +10,10 @@
  * แก้เนื้อหาได้ที่ตัวแปร CHAPTERS ด้านล่าง หรือแก้ทีหลังในหลังบ้านก็ได้
  */
 import 'dotenv/config';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db',
-});
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 /* ------------------------------ ข้อมูลคอร์ส ------------------------------ */
@@ -557,6 +555,13 @@ async function main() {
   }
 
   // 2. สร้างหรืออัปเดตคอร์ส
+  //    ถ้าเคยอัปโหลดเอกสารประกอบขึ้น Blob แล้ว (URL เริ่มด้วย http) ให้คงค่าเดิมไว้
+  //    ไม่ให้สคริปต์นี้เขียนทับด้วย path ของไฟล์บนเครื่อง
+  const before = await prisma.course.findUnique({ where: { slug: COURSE.slug } });
+  const materialUrl = before?.materialUrl?.startsWith('http')
+    ? before.materialUrl
+    : COURSE.materialUrl;
+
   const course = await prisma.course.upsert({
     where: { slug: COURSE.slug },
     create: {
@@ -575,7 +580,7 @@ async function main() {
       isPublished: COURSE.isPublished,
       isFeatured: COURSE.isFeatured,
       materialTitle: COURSE.materialTitle,
-      materialUrl: COURSE.materialUrl,
+      materialUrl,
       order: 0,
     },
     update: {
@@ -593,7 +598,7 @@ async function main() {
       isPublished: COURSE.isPublished,
       isFeatured: COURSE.isFeatured,
       materialTitle: COURSE.materialTitle,
-      materialUrl: COURSE.materialUrl,
+      materialUrl,
       order: 0,
     },
   });

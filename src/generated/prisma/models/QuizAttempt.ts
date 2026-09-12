@@ -546,6 +546,7 @@ export type QuizAttemptCreateOrConnectWithoutUserInput = {
 
 export type QuizAttemptCreateManyUserInputEnvelope = {
   data: Prisma.QuizAttemptCreateManyUserInput | Prisma.QuizAttemptCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type QuizAttemptUpsertWithWhereUniqueWithoutUserInput = {
@@ -605,6 +606,7 @@ export type QuizAttemptCreateOrConnectWithoutQuizInput = {
 
 export type QuizAttemptCreateManyQuizInputEnvelope = {
   data: Prisma.QuizAttemptCreateManyQuizInput | Prisma.QuizAttemptCreateManyQuizInput[]
+  skipDuplicates?: boolean
 }
 
 export type QuizAttemptUpsertWithWhereUniqueWithoutQuizInput = {
@@ -1451,6 +1453,7 @@ export type QuizAttemptCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many QuizAttempts.
    */
   data: Prisma.QuizAttemptCreateManyInput | Prisma.QuizAttemptCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1469,6 +1472,7 @@ export type QuizAttemptCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many QuizAttempts.
    */
   data: Prisma.QuizAttemptCreateManyInput | Prisma.QuizAttemptCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

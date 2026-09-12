@@ -1401,6 +1401,7 @@ export type QuizCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Quizzes.
    */
   data: Prisma.QuizCreateManyInput | Prisma.QuizCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1419,6 +1420,7 @@ export type QuizCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Quizzes.
    */
   data: Prisma.QuizCreateManyInput | Prisma.QuizCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

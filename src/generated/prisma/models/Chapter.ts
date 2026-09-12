@@ -476,6 +476,7 @@ export type ChapterCreateOrConnectWithoutCourseInput = {
 
 export type ChapterCreateManyCourseInputEnvelope = {
   data: Prisma.ChapterCreateManyCourseInput | Prisma.ChapterCreateManyCourseInput[]
+  skipDuplicates?: boolean
 }
 
 export type ChapterUpsertWithWhereUniqueWithoutCourseInput = {
@@ -1355,6 +1356,7 @@ export type ChapterCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Chapters.
    */
   data: Prisma.ChapterCreateManyInput | Prisma.ChapterCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1373,6 +1375,7 @@ export type ChapterCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Chapters.
    */
   data: Prisma.ChapterCreateManyInput | Prisma.ChapterCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

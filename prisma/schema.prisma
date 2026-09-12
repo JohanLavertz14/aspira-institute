@@ -1,6 +1,6 @@
 // Prisma schema สำหรับเว็บไซต์คอร์สเรียนออนไลน์ Aspira Institute
-// ฐานข้อมูลเริ่มต้นเป็น SQLite เพื่อให้รันได้ทันที
-// ถ้าจะย้ายขึ้น PostgreSQL ให้เปลี่ยน provider เป็น "postgresql" แล้วรัน prisma migrate ใหม่
+// ใช้ PostgreSQL ทั้งบนเครื่องพัฒนาและบน production (Neon ผ่าน Vercel)
+// connection string อ่านจาก DATABASE_URL ใน .env และใน Environment Variables ของ Vercel
 
 generator client {
   provider = "prisma-client"
@@ -8,10 +8,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
-// SQLite ไม่รองรับ enum ของ Prisma จึงเก็บเป็น String
+// สถานะต่าง ๆ เก็บเป็น String เพื่อให้เพิ่มค่าใหม่ได้โดยไม่ต้อง migrate
 // role:            STUDENT | ADMIN
 // order.status:    PENDING | WAITING_REVIEW | PAID | REJECTED | CANCELLED
 // payment.status:  PENDING | APPROVED | REJECTED
