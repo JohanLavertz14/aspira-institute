@@ -130,6 +130,7 @@ public/uploads/          ไฟล์ที่อัปโหลด (สลิ�
 | `npm run db:seed` | ใส่ข้อมูลตัวอย่างใหม่ |
 | `npm run db:reset` | ล้างฐานข้อมูลแล้ว seed ใหม่ทั้งหมด (ห้ามใช้กับ production) |
 | `npm run db:seed:chem` | สร้างหรืออัปเดตคอร์ส Foundation for Chemistry จากไฟล์ `prisma/seed-foundation-chemistry.ts` (รันซ้ำได้) |
+| `npm run db:check` | ตรวจว่าต่อฐานข้อมูลได้ ตารางครบ และมีคอร์สกับแอดมินแล้วหรือยัง |
 
 ### จัดการบัญชีแอดมิน
 

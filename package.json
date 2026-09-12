@@ -12,7 +12,8 @@
     "db:reset": "prisma db push --force-reset && tsx prisma/seed.ts",
     "setup": "prisma generate && prisma db push && tsx prisma/seed.ts",
     "db:seed:chem": "tsx prisma/seed-foundation-chemistry.ts",
-    "admin": "tsx prisma/manage-admin.ts"
+    "admin": "tsx prisma/manage-admin.ts",
+    "db:check": "tsx prisma/check-db.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
