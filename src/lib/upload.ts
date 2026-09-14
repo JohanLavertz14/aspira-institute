@@ -40,6 +40,14 @@ export async function saveUploadedFile(file: File, folder: 'slips' | 'sheets' | 
     return blob.url;
   }
 
+  // ถ้ารันอยู่บน Vercel แต่ไม่มี token แปลว่ายังไม่ได้สร้าง Blob store
+  // เขียนไฟล์ลงดิสก์ไม่ได้แน่นอน จึงหยุดพร้อมบอกวิธีแก้ ดีกว่าปล่อยให้ error ดิบโผล่หน้าเว็บ
+  if (process.env.VERCEL) {
+    throw new Error(
+      'ยังไม่ได้ตั้งค่าที่เก็บไฟล์ของเว็บ กรุณาแจ้งผู้ดูแลระบบให้สร้าง Blob store ใน Vercel แล้ว redeploy',
+    );
+  }
+
   // บนเครื่องพัฒนา เก็บลงโฟลเดอร์ public/uploads
   const dir = path.join(process.cwd(), 'public', 'uploads', folder);
   await fs.mkdir(dir, { recursive: true });
