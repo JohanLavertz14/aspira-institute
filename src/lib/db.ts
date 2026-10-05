@@ -17,6 +17,13 @@ function createClient() {
         'ให้แก้ DATABASE_URL ใน .env เป็น connection string ของ PostgreSQL',
     );
   }
+  // ตอนรันในเครื่อง พิมพ์โฮสต์ปลายทางไว้หนึ่งบรรทัด จะได้รู้ว่าเซิร์ฟเวอร์ต่อฐานข้อมูลตัวไหนอยู่
+  // ถ้าแก้ .env แล้วบรรทัดนี้ยังเป็นค่าเดิม แปลว่ายังไม่ได้รีสตาร์ท dev server
+  if (process.env.NODE_ENV !== 'production') {
+    const host = connectionString.split('@')[1]?.split('/')[0] ?? '(ไม่ทราบ)';
+    console.log(`[db] ต่อฐานข้อมูลที่ ${host}`);
+  }
+
   const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({ adapter });
 }
