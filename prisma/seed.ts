@@ -523,7 +523,25 @@ const COURSES: CourseSeed[] = [
   },
 ];
 
+/** ฐานข้อมูลที่อยู่ในเครื่องตัวเองเท่านั้นที่ปล่อยให้ล้างได้โดยไม่ต้องยืนยัน */
+function assertSafeTarget() {
+  const url = process.env.DATABASE_URL ?? '';
+  const host = url.split('@')[1]?.split('/')[0] ?? '';
+  const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])/.test(host);
+
+  console.log(`ฐานข้อมูลปลายทาง: ${host || '(ไม่ทราบ)'}`);
+
+  if (!isLocal && process.env.ALLOW_REMOTE_SEED !== '1') {
+    console.error('');
+    console.error('หยุดก่อน สคริปต์นี้จะลบข้อมูลทั้งหมดแล้วใส่ข้อมูลตัวอย่างแทน');
+    console.error('แต่ฐานข้อมูลปลายทางไม่ได้อยู่ในเครื่องนี้ ซึ่งอาจเป็นฐานข้อมูลจริง');
+    console.error('ถ้าตั้งใจจะล้างจริง ให้รันใหม่โดยใส่ ALLOW_REMOTE_SEED=1 ไว้หน้าคำสั่ง');
+    process.exit(1);
+  }
+}
+
 async function main() {
+  assertSafeTarget();
   console.log('เริ่ม seed ข้อมูลตัวอย่าง...');
 
   // ล้างข้อมูลเดิม

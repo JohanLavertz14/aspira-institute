@@ -7,7 +7,15 @@ const connectionString = process.env.DATABASE_URL;
 
 function createClient() {
   if (!connectionString) {
-    throw new Error('ยังไม่ได้ตั้งค่า DATABASE_URL');
+    throw new Error(
+      'ยังไม่ได้ตั้งค่า DATABASE_URL ถ้ารันในเครื่องให้ใส่ connection string ของ PostgreSQL ในไฟล์ .env',
+    );
+  }
+  if (connectionString.startsWith('file:')) {
+    throw new Error(
+      'DATABASE_URL ยังชี้ไปที่ไฟล์ SQLite เดิม ตอนนี้ระบบใช้ PostgreSQL แล้ว ' +
+        'ให้แก้ DATABASE_URL ใน .env เป็น connection string ของ PostgreSQL',
+    );
   }
   const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({ adapter });

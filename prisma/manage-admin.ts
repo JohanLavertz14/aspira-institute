@@ -131,7 +131,14 @@ async function remove(emailRaw: string) {
   console.log(`ลบบัญชีแอดมิน ${email} เรียบร้อย`);
 }
 
+/** แสดงปลายทางให้เห็นก่อน จะได้รู้ว่ากำลังแก้ฐานข้อมูลตัวไหน */
+function logTarget() {
+  const host = (process.env.DATABASE_URL ?? '').split('@')[1]?.split('/')[0] ?? '(ไม่ทราบ)';
+  console.log(`ฐานข้อมูลปลายทาง: ${host}`);
+}
+
 async function main() {
+  logTarget();
   const [command, ...args] = process.argv.slice(2);
 
   switch (command) {

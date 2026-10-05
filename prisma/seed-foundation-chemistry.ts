@@ -607,7 +607,14 @@ const CHAPTERS: ChapterSeed[] = [
 
 /* ------------------------------ ตัวสคริปต์ ------------------------------ */
 
+/** แสดงปลายทางให้เห็นก่อน จะได้รู้ว่ากำลังแก้ฐานข้อมูลตัวไหน */
+function logTarget() {
+  const host = (process.env.DATABASE_URL ?? '').split('@')[1]?.split('/')[0] ?? '(ไม่ทราบ)';
+  console.log(`ฐานข้อมูลปลายทาง: ${host}`);
+}
+
 async function main() {
+  logTarget();
   console.log('กำลังสร้างคอร์ส Foundation for Chemistry...');
 
   // 1. หาวิชาเคมี ถ้ายังไม่มีให้สร้างใหม่
