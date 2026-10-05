@@ -13,6 +13,22 @@ function SubmitButton() {
   );
 }
 
+/** จุดกลมแสดงตัวเลือกที่เลือกอยู่ แนวเดียวกับคอมโพเนนต์ของ 21st.dev */
+function Dot({ selected }: { selected: boolean }) {
+  return (
+    <span
+      className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition-colors duration-300"
+      style={{ borderColor: selected ? '#ec3566' : '#d9ccd1' }}
+      aria-hidden
+    >
+      <span
+        className="h-2.5 w-2.5 rounded-full bg-brand-600 transition-opacity duration-300"
+        style={{ opacity: selected ? 1 : 0 }}
+      />
+    </span>
+  );
+}
+
 const METHODS = [
   {
     value: 'BANK_TRANSFER',
@@ -39,42 +55,38 @@ export function CheckoutForm({ slug, cardEnabled }: { slug: string; cardEnabled:
 
       <div className="mt-4 space-y-3">
         {METHODS.map((m) => (
-          <label
+          <button
             key={m.value}
-            className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition ${
+            type="button"
+            onClick={() => setMethod(m.value)}
+            className={`flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-all duration-200 ${
               method === m.value
                 ? 'border-brand-400 bg-brand-50/60 ring-4 ring-brand-100'
                 : 'border-ink-line hover:border-brand-200'
             }`}
           >
-            <input
-              type="radio"
-              name="methodChoice"
-              className="mt-1 accent-brand-600"
-              checked={method === m.value}
-              onChange={() => setMethod(m.value)}
-            />
+            <Dot selected={method === m.value} />
             <span>
               <span className="block text-sm font-medium text-ink">{m.title}</span>
               <span className="mt-0.5 block text-xs text-ink-soft">{m.desc}</span>
             </span>
-          </label>
+          </button>
         ))}
 
         {/* ช่องสำหรับบัตรเครดิต เตรียมไว้ให้ต่อระบบชำระเงินภายหลัง */}
-        <label
-          className={`flex items-start gap-3 rounded-xl border border-dashed border-ink-line p-4 ${
-            cardEnabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+        <button
+          type="button"
+          disabled={!cardEnabled}
+          onClick={() => setMethod('CARD')}
+          className={`flex w-full items-start gap-3 rounded-xl border border-dashed p-4 text-left transition-all duration-200 ${
+            cardEnabled
+              ? method === 'CARD'
+                ? 'border-brand-400 bg-brand-50/60 ring-4 ring-brand-100'
+                : 'border-ink-line hover:border-brand-200'
+              : 'cursor-not-allowed border-ink-line opacity-60'
           }`}
         >
-          <input
-            type="radio"
-            name="methodChoice"
-            className="mt-1 accent-brand-600"
-            disabled={!cardEnabled}
-            checked={method === 'CARD'}
-            onChange={() => setMethod('CARD')}
-          />
+          <Dot selected={method === 'CARD'} />
           <span>
             <span className="block text-sm font-medium text-ink">
               บัตรเครดิต/เดบิต{' '}
@@ -84,7 +96,7 @@ export function CheckoutForm({ slug, cardEnabled }: { slug: string; cardEnabled:
               เตรียมช่องทางไว้แล้ว เปิดใช้ได้เมื่อเชื่อมต่อผู้ให้บริการรับชำระเงิน
             </span>
           </span>
-        </label>
+        </button>
       </div>
 
       {state?.error && (

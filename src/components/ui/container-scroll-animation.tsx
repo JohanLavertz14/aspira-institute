@@ -1,0 +1,97 @@
+'use client';
+
+import React, { useRef } from 'react';
+import { useScroll, useTransform, motion, useReducedMotion, type MotionValue } from 'framer-motion';
+
+/**
+ * กรอบอุปกรณ์ที่ค่อย ๆ ตั้งตรงขึ้นเมื่อเลื่อนหน้าจอ
+ *
+ * ดัดแปลงจากคอมโพเนนต์ ContainerScroll ของ 21st.dev
+ * สิ่งที่ปรับให้เข้ากับเว็บนี้
+ * - ลดความสูงลงจากต้นฉบับ เพื่อไม่ให้หน้าแรกยาวเกินไป
+ * - เปลี่ยนสีกรอบและเงาให้เข้ากับโทนชมพูส้มของสถาบัน
+ * - รองรับ prefers-reduced-motion เครื่องที่ปิดแอนิเมชันจะเห็นภาพนิ่ง
+ * - กำหนด offset ของการเลื่อนให้เริ่มนับตั้งแต่หัวหน้าเพจ
+ */
+export const ContainerScroll = ({
+  titleComponent,
+  children,
+}: {
+  titleComponent: string | React.ReactNode;
+  children: React.ReactNode;
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const scaleDimensions = (): [number, number] => (isMobile ? [0.82, 1] : [1.04, 1]);
+
+  const rotate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [18, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [1, 1] : scaleDimensions());
+  const translate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, -80]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative flex h-[46rem] items-start justify-center p-2 md:h-[58rem] md:p-10"
+    >
+      <div className="relative w-full py-10 md:py-16" style={{ perspective: '1200px' }}>
+        <Header translate={translate} titleComponent={titleComponent} />
+        <Card rotate={rotate} translate={translate} scale={scale}>
+          {children}
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export const Header = ({
+  translate,
+  titleComponent,
+}: {
+  translate: MotionValue<number>;
+  titleComponent: string | React.ReactNode;
+}) => {
+  return (
+    <motion.div style={{ translateY: translate }} className="mx-auto max-w-4xl text-center">
+      {titleComponent}
+    </motion.div>
+  );
+};
+
+export const Card = ({
+  rotate,
+  scale,
+  children,
+}: {
+  rotate: MotionValue<number>;
+  scale: MotionValue<number>;
+  translate: MotionValue<number>;
+  children: React.ReactNode;
+}) => {
+  return (
+    <motion.div
+      style={{
+        rotateX: rotate,
+        scale,
+        boxShadow:
+          '0 0 #0000004d, 0 9px 20px rgba(27,20,24,0.18), 0 37px 37px rgba(27,20,24,0.12), 0 84px 50px rgba(236,53,102,0.10), 0 149px 60px rgba(249,115,22,0.05)',
+      }}
+      className="mx-auto mt-10 h-[22rem] w-full max-w-5xl rounded-[28px] border-4 border-[#241c20] bg-[#151013] p-2 shadow-2xl md:h-[32rem] md:p-3"
+    >
+      <div className="h-full w-full overflow-hidden rounded-[18px] bg-white">{children}</div>
+    </motion.div>
+  );
+};

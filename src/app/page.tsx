@@ -4,6 +4,8 @@ import { getSiteSettings } from '@/lib/settings';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { CourseCard, type CourseCardData } from '@/components/course-card';
+import { ContainerScroll } from '@/components/ui/container-scroll-animation';
+import { HeroPreview } from '@/components/hero-preview';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,7 +68,7 @@ export default async function HomePage() {
       <SiteHeader />
 
       <main>
-        {/* ส่วนหัวหน้าแรก */}
+        {/* ส่วนหัวหน้าแรก กรอบอุปกรณ์จะค่อย ๆ ตั้งตรงขึ้นเมื่อเลื่อนหน้าจอ */}
         <section className="relative overflow-hidden bg-brand-gradient-soft">
           {/* ดวงแสงเบลอเป็นพื้นหลัง ชมพูคู่ส้ม ให้ภาพรวมอบอุ่นและดูมีมิติ */}
           <span className="blob -left-24 -top-28 h-80 w-80 bg-brand-300/45 animate-float" aria-hidden />
@@ -75,99 +77,57 @@ export default async function HomePage() {
             style={{ animationDelay: '2.5s' }}
             aria-hidden
           />
-          <span className="blob bottom-0 left-1/3 h-72 w-72 bg-brand-200/40" aria-hidden />
+          <span className="blob bottom-32 left-1/3 h-72 w-72 bg-brand-200/40" aria-hidden />
 
-          <div className="container-page relative grid items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
-            <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-brand-200/70 bg-white/70 px-3.5 py-1.5 text-xs font-medium text-brand-700 shadow-sm backdrop-blur">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
-                </span>
-                เปิดรับสมัครแล้ว คอร์สเรียนออนไลน์
-              </span>
-              <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-                เรียนกับ{' '}
-                <span className="text-gradient">
-                  {settings.siteName}
-                </span>
-                <br />
-                ทบทวนซ้ำได้ทุกที่ทุกเวลา
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-soft">
-                {settings.tagline ||
-                  'คอร์สเรียนออนไลน์ที่ออกแบบจากห้องเรียนจริง พร้อมชีทสรุป แบบฝึกหัด และแบบทดสอบท้ายบททุกบท'}
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/courses" className="btn-primary">
-                  ดูคอร์สทั้งหมด
-                </Link>
-                <Link href="/register" className="btn-outline">
-                  สมัครสมาชิกฟรี
-                </Link>
-              </div>
-
-              <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-brand-200/60 pt-6">
-                {[
-                  ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
-                  ['บทเรียนทั้งหมด', `${lessonCount} บท`],
-                  ['วิชาที่เปิดสอน', `${subjects.length} วิชา`],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <dt className="text-xs text-ink-soft">{label}</dt>
-                    <dd className="mt-1 text-xl font-semibold text-gradient">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <div className="relative">
-              <div className="card overflow-hidden">
-                <div className="aspect-video bg-brand-gradient p-6 text-white">
-                  <div className="flex h-full flex-col justify-between">
-                    <span className="text-xs uppercase tracking-[0.2em] text-white/70">
-                      ตัวอย่างหน้าเรียน
+          <div className="container-page relative">
+            <ContainerScroll
+              titleComponent={
+                <div className="px-2">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-brand-200/70 bg-white/70 px-3.5 py-1.5 text-xs font-medium text-brand-700 shadow-sm backdrop-blur">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
                     </span>
-                    <div>
-                      <p className="text-lg font-semibold">บทที่ 1 เซต</p>
-                      <p className="text-sm text-white/80">ความหมายของเซตและการเขียนเซต</p>
-                    </div>
+                    เปิดรับสมัครแล้ว คอร์สเรียนออนไลน์
+                  </span>
+
+                  <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+                    เรียนกับ <span className="text-gradient">{settings.siteName}</span>
+                    <br />
+                    ทบทวนซ้ำได้ทุกที่ทุกเวลา
+                  </h1>
+
+                  <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-soft">
+                    {settings.tagline ||
+                      'คอร์สเรียนออนไลน์ที่ออกแบบจากห้องเรียนจริง พร้อมชีทสรุป แบบฝึกหัด และแบบทดสอบท้ายบททุกบท'}
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap justify-center gap-3">
+                    <Link href="/courses" className="btn-primary">
+                      ดูคอร์สทั้งหมด
+                    </Link>
+                    <Link href="/register" className="btn-outline">
+                      สมัครสมาชิกฟรี
+                    </Link>
                   </div>
+
+                  <dl className="mx-auto mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-brand-200/60 pt-6">
+                    {[
+                      ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
+                      ['บทเรียนทั้งหมด', `${lessonCount} บท`],
+                      ['วิชาที่เปิดสอน', `${subjects.length} วิชา`],
+                    ].map(([label, value]) => (
+                      <div key={label}>
+                        <dt className="text-xs text-ink-soft">{label}</dt>
+                        <dd className="mt-1 text-xl font-semibold text-gradient">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
-                <div className="space-y-3 p-5">
-                  {[
-                    ['ความหมายของเซตและการเขียนเซต', 'เรียนจบแล้ว'],
-                    ['ยูเนียน อินเตอร์เซกชัน คอมพลีเมนต์', 'กำลังเรียน'],
-                    ['โจทย์ประยุกต์ด้วยแผนภาพเวนน์', 'ยังไม่เริ่ม'],
-                  ].map(([title, status], i) => (
-                    <div key={title} className="flex items-center justify-between gap-3">
-                      <span className="flex items-center gap-2.5 text-sm text-ink">
-                        <span
-                          className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-semibold ${
-                            i === 0
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : i === 1
-                                ? 'bg-brand-100 text-brand-700'
-                                : 'bg-gray-100 text-gray-500'
-                          }`}
-                        >
-                          {i + 1}
-                        </span>
-                        <span className="line-clamp-1">{title}</span>
-                      </span>
-                      <span className="shrink-0 text-xs text-ink-soft">{status}</span>
-                    </div>
-                  ))}
-                  <div className="pt-2">
-                    <div className="h-2 overflow-hidden rounded-full bg-brand-100">
-                      <div className="h-full w-1/3 rounded-full bg-brand-600" />
-                    </div>
-                    <p className="mt-2 text-xs text-ink-soft">ความคืบหน้า 33%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              }
+            >
+              <HeroPreview />
+            </ContainerScroll>
           </div>
         </section>
 

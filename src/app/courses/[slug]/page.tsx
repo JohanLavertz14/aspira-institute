@@ -5,7 +5,8 @@ import { readSession } from '@/lib/auth';
 import { getEnrollment } from '@/lib/access';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
-import { formatBaht, formatDuration, daysLeft } from '@/lib/format';
+import { formatDuration, daysLeft } from '@/lib/format';
+import { PriceToggle } from '@/components/ui/price-toggle';
 
 export const dynamic = 'force-dynamic';
 
@@ -240,17 +241,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
           {/* กล่องราคาและปุ่มสมัคร */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="card p-6">
-              <div className="flex items-end gap-3">
-                <span className="text-3xl font-semibold text-brand-700">{formatBaht(course.price)}</span>
-                {course.comparePrice && course.comparePrice > course.price && (
-                  <span className="pb-1 text-sm text-ink-soft line-through">
-                    {formatBaht(course.comparePrice)}
-                  </span>
-                )}
-              </div>
-              <p className="mt-1.5 text-sm text-ink-soft">
-                เรียนได้ {course.accessDays} วันนับจากวันที่อนุมัติการชำระเงิน
-              </p>
+              <PriceToggle
+                price={course.price}
+                comparePrice={course.comparePrice}
+                accessDays={course.accessDays}
+              />
 
               <div className="mt-6">
                 {isActiveEnrollment ? (
