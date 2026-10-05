@@ -10,7 +10,8 @@ import { useScroll, useTransform, motion, useReducedMotion, type MotionValue } f
  * สิ่งที่ปรับให้เข้ากับเว็บนี้
  * - ลดความสูงลงจากต้นฉบับ เพื่อไม่ให้หน้าแรกยาวเกินไป
  * - เปลี่ยนสีกรอบและเงาให้เข้ากับโทนชมพูส้มของสถาบัน
- * - รองรับ prefers-reduced-motion เครื่องที่ปิดแอนิเมชันจะเห็นภาพนิ่ง
+ * - ปรับขนาดกรอบให้เห็นทั้งใบในหน้าจอเดียว ไม่งั้นจะมองไม่ออกว่ากำลังเอียง
+ * - รองรับ prefers-reduced-motion เครื่องที่ตั้งค่าลดการเคลื่อนไหวจะเอียงน้อยลงแทนที่จะนิ่งสนิท
  * - กำหนด offset ของการเลื่อนให้เริ่มนับตั้งแต่หัวหน้าเพจ
  */
 export const ContainerScroll = ({
@@ -36,18 +37,18 @@ export const ContainerScroll = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const scaleDimensions = (): [number, number] => (isMobile ? [0.82, 1] : [1.04, 1]);
+  const scaleDimensions = (): [number, number] => (isMobile ? [0.85, 1] : [1.06, 1]);
 
-  const rotate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [18, 0]);
+  const rotate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [6, 0] : [24, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [1, 1] : scaleDimensions());
-  const translate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, -80]);
+  const translate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, -140]);
 
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[46rem] items-start justify-center p-2 md:h-[58rem] md:p-10"
+      className="relative flex h-[42rem] items-start justify-center p-2 md:h-[46rem] md:p-6"
     >
-      <div className="relative w-full py-10 md:py-16" style={{ perspective: '1200px' }}>
+      <div className="relative w-full py-8 md:py-10" style={{ perspective: '1200px' }}>
         <Header translate={translate} titleComponent={titleComponent} />
         <Card rotate={rotate} translate={translate} scale={scale}>
           {children}
@@ -89,7 +90,7 @@ export const Card = ({
         boxShadow:
           '0 0 #0000004d, 0 9px 20px rgba(27,20,24,0.18), 0 37px 37px rgba(27,20,24,0.12), 0 84px 50px rgba(236,53,102,0.10), 0 149px 60px rgba(249,115,22,0.05)',
       }}
-      className="mx-auto mt-10 h-[22rem] w-full max-w-5xl rounded-[28px] border-4 border-[#241c20] bg-[#151013] p-2 shadow-2xl md:h-[32rem] md:p-3"
+      className="mx-auto mt-8 h-[16rem] w-full max-w-4xl rounded-[26px] border-4 border-[#241c20] bg-[#151013] p-2 shadow-2xl md:h-[24rem] md:p-3"
     >
       <div className="h-full w-full overflow-hidden rounded-[18px] bg-white">{children}</div>
     </motion.div>

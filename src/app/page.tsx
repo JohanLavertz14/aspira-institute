@@ -69,15 +69,16 @@ export default async function HomePage() {
 
       <main>
         {/* ส่วนหัวหน้าแรก กรอบอุปกรณ์จะค่อย ๆ ตั้งตรงขึ้นเมื่อเลื่อนหน้าจอ */}
-        <section className="relative overflow-hidden bg-brand-gradient-soft">
-          {/* ดวงแสงเบลอเป็นพื้นหลัง ชมพูคู่ส้ม ให้ภาพรวมอบอุ่นและดูมีมิติ */}
-          <span className="blob -left-24 -top-28 h-80 w-80 bg-brand-300/45 animate-float" aria-hidden />
-          <span
-            className="blob -right-16 top-10 h-96 w-96 bg-accent-300/40 animate-float"
-            style={{ animationDelay: '2.5s' }}
-            aria-hidden
-          />
-          <span className="blob bottom-32 left-1/3 h-72 w-72 bg-brand-200/40" aria-hidden />
+        <section className="relative bg-brand-gradient-soft">
+          {/* ดวงแสงเบลอเป็นพื้นหลัง ชมพูคู่ส้ม ตัดขอบเฉพาะชั้นนี้ ไม่ให้ไปตัดกรอบอุปกรณ์ */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <span className="blob -left-24 -top-28 h-80 w-80 bg-brand-300/45 animate-float" />
+            <span
+              className="blob -right-16 top-10 h-96 w-96 bg-accent-300/40 animate-float"
+              style={{ animationDelay: '2.5s' }}
+            />
+            <span className="blob bottom-32 left-1/3 h-72 w-72 bg-brand-200/40" />
+          </div>
 
           <div className="container-page relative">
             <ContainerScroll
@@ -91,18 +92,18 @@ export default async function HomePage() {
                     เปิดรับสมัครแล้ว คอร์สเรียนออนไลน์
                   </span>
 
-                  <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+                  <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
                     เรียนกับ <span className="text-gradient">{settings.siteName}</span>
                     <br />
                     ทบทวนซ้ำได้ทุกที่ทุกเวลา
                   </h1>
 
-                  <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-soft">
+                  <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
                     {settings.tagline ||
                       'คอร์สเรียนออนไลน์ที่ออกแบบจากห้องเรียนจริง พร้อมชีทสรุป แบบฝึกหัด และแบบทดสอบท้ายบททุกบท'}
                   </p>
 
-                  <div className="mt-8 flex flex-wrap justify-center gap-3">
+                  <div className="mt-7 flex flex-wrap justify-center gap-3">
                     <Link href="/courses" className="btn-primary">
                       ดูคอร์สทั้งหมด
                     </Link>
@@ -110,24 +111,25 @@ export default async function HomePage() {
                       สมัครสมาชิกฟรี
                     </Link>
                   </div>
-
-                  <dl className="mx-auto mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-brand-200/60 pt-6">
-                    {[
-                      ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
-                      ['บทเรียนทั้งหมด', `${lessonCount} บท`],
-                      ['วิชาที่เปิดสอน', `${subjects.length} วิชา`],
-                    ].map(([label, value]) => (
-                      <div key={label}>
-                        <dt className="text-xs text-ink-soft">{label}</dt>
-                        <dd className="mt-1 text-xl font-semibold text-gradient">{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
                 </div>
               }
             >
               <HeroPreview />
             </ContainerScroll>
+
+            {/* แถบสถิติ ย้ายลงมาใต้กรอบอุปกรณ์ เพื่อให้ส่วนหัวกระชับขึ้น */}
+            <dl className="mx-auto -mt-8 grid max-w-xl grid-cols-3 gap-4 pb-16 text-center sm:-mt-4">
+              {[
+                ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
+                ['บทเรียนทั้งหมด', `${lessonCount} บท`],
+                ['วิชาที่เปิดสอน', `${subjects.length} วิชา`],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <dt className="text-xs text-ink-soft">{label}</dt>
+                  <dd className="mt-1 text-xl font-semibold text-gradient">{value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
