@@ -67,13 +67,28 @@ export default async function HomePage() {
 
       <main>
         {/* ส่วนหัวหน้าแรก */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white">
-          <div className="container-page grid items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+        <section className="relative overflow-hidden bg-brand-gradient-soft">
+          {/* ดวงแสงเบลอเป็นพื้นหลัง ชมพูคู่ส้ม ให้ภาพรวมอบอุ่นและดูมีมิติ */}
+          <span className="blob -left-24 -top-28 h-80 w-80 bg-brand-300/45 animate-float" aria-hidden />
+          <span
+            className="blob -right-16 top-10 h-96 w-96 bg-accent-300/40 animate-float"
+            style={{ animationDelay: '2.5s' }}
+            aria-hidden
+          />
+          <span className="blob bottom-0 left-1/3 h-72 w-72 bg-brand-200/40" aria-hidden />
+
+          <div className="container-page relative grid items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
             <div>
-              <span className="badge-brand">คอร์สเรียนออนไลน์</span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand-200/70 bg-white/70 px-3.5 py-1.5 text-xs font-medium text-brand-700 shadow-sm backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
+                </span>
+                เปิดรับสมัครแล้ว คอร์สเรียนออนไลน์
+              </span>
               <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
                 เรียนกับ{' '}
-                <span className="bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">
+                <span className="text-gradient">
                   {settings.siteName}
                 </span>
                 <br />
@@ -93,7 +108,7 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-ink-line pt-6">
+              <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-brand-200/60 pt-6">
                 {[
                   ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
                   ['บทเรียนทั้งหมด', `${lessonCount} บท`],
@@ -101,7 +116,7 @@ export default async function HomePage() {
                 ].map(([label, value]) => (
                   <div key={label}>
                     <dt className="text-xs text-ink-soft">{label}</dt>
-                    <dd className="mt-1 text-xl font-semibold text-ink">{value}</dd>
+                    <dd className="mt-1 text-xl font-semibold text-gradient">{value}</dd>
                   </div>
                 ))}
               </dl>
@@ -109,7 +124,7 @@ export default async function HomePage() {
 
             <div className="relative">
               <div className="card overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-brand-500 via-brand-600 to-brand-800 p-6 text-white">
+                <div className="aspect-video bg-brand-gradient p-6 text-white">
                   <div className="flex h-full flex-col justify-between">
                     <span className="text-xs uppercase tracking-[0.2em] text-white/70">
                       ตัวอย่างหน้าเรียน
@@ -166,7 +181,7 @@ export default async function HomePage() {
               <Link
                 key={s.id}
                 href={`/courses?subject=${s.slug}`}
-                className="card flex items-start gap-4 p-5 transition hover:-translate-y-0.5 hover:shadow-lift"
+                className="card-interactive flex items-start gap-4 p-5"
               >
                 <span
                   className="mt-0.5 h-10 w-10 shrink-0 rounded-xl"
@@ -185,7 +200,7 @@ export default async function HomePage() {
         </section>
 
         {/* คอร์สแนะนำ */}
-        <section className="bg-brand-50/40 py-16">
+        <section className="bg-brand-gradient-soft py-16">
           <div className="container-page">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
@@ -212,7 +227,7 @@ export default async function HomePage() {
 
           <ol className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="card p-5">
+              <li key={step.title} className="card-interactive p-5">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-600 text-sm font-semibold text-white">
                   {i + 1}
                 </span>
@@ -226,7 +241,7 @@ export default async function HomePage() {
         {/* เกี่ยวกับสถาบัน */}
         {settings.aboutText && (
           <section className="container-page pb-8">
-            <div className="card bg-gradient-to-br from-brand-600 to-brand-800 p-8 text-white sm:p-12">
+            <div className="card overflow-hidden bg-brand-gradient p-8 text-white sm:p-12">
               <h2 className="text-2xl font-semibold tracking-tight">เกี่ยวกับ {settings.siteName}</h2>
               <p className="mt-4 max-w-3xl leading-relaxed text-white/85">{settings.aboutText}</p>
               <Link

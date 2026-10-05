@@ -66,7 +66,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
         <section
           className="text-white"
           style={{
-            background: `linear-gradient(135deg, ${course.subject.colorHex} 0%, #1c1420 120%)`,
+            backgroundImage: `radial-gradient(90% 120% at 100% 0%, ${course.subject.colorHex}4d 0%, transparent 60%), linear-gradient(115deg, #c92553 0%, #ec3566 45%, #e85d04 100%)`,
           }}
         >
           <div className="container-page py-12 lg:py-16">

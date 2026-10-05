@@ -74,7 +74,7 @@ export default async function MyCoursesPage() {
                 <div
                   className="h-24"
                   style={{
-                    background: `linear-gradient(135deg, ${e.course.subject.colorHex} 0%, rgba(28,20,32,0.85) 130%)`,
+                    backgroundImage: `radial-gradient(130% 110% at 100% 0%, ${e.course.subject.colorHex}59 0%, transparent 58%), linear-gradient(120deg, #ec3566 0%, #fa557f 45%, #f97316 100%)`,
                   }}
                 />
                 <div className="p-5">

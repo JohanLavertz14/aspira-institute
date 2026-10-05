@@ -42,7 +42,7 @@ export default async function LoginPage({
         </div>
       </div>
 
-      <div className="relative hidden bg-gradient-to-br from-brand-500 via-brand-600 to-brand-800 lg:block">
+      <div className="relative hidden bg-brand-gradient lg:block">
         <div className="flex h-full flex-col justify-center px-14 text-white">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/70">
             {settings.siteName}

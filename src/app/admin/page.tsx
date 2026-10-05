@@ -100,7 +100,7 @@ export default async function AdminDashboard() {
                   {m.total > 0 ? formatNumber(m.total) : ''}
                 </span>
                 <div
-                  className="w-full rounded-t-lg bg-brand-500 transition-all"
+                  className="w-full rounded-t-lg bg-brand-gradient transition-all"
                   style={{ height: `${Math.max(2, (m.total / maxMonth) * 82)}%` }}
                   title={formatBaht(m.total)}
                 />

@@ -49,7 +49,7 @@ export default async function CheckoutPage({ params }: { params: Promise<{ slug:
                 <span
                   className="h-20 w-28 shrink-0 rounded-xl"
                   style={{
-                    background: `linear-gradient(135deg, ${course.subject.colorHex} 0%, rgba(28,20,32,0.85) 130%)`,
+                    backgroundImage: `radial-gradient(130% 110% at 100% 0%, ${course.subject.colorHex}59 0%, transparent 58%), linear-gradient(120deg, #ec3566 0%, #fa557f 45%, #f97316 100%)`,
                   }}
                 />
                 <div>

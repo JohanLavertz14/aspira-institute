@@ -22,7 +22,7 @@ export function Logo({
         <img src={logoUrl} alt={siteName} className={`${box} rounded-xl object-contain`} />
       ) : (
         <span
-          className={`${box} grid place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 font-bold text-white shadow-sm`}
+          className={`${box} grid place-items-center rounded-xl bg-brand-gradient font-bold text-white shadow-sm`}
           aria-hidden
         >
           A

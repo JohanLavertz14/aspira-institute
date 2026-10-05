@@ -25,7 +25,7 @@ function Cover({ course }: { course: CourseCardData }) {
     <div
       className="flex h-full w-full flex-col justify-between p-5 text-white"
       style={{
-        background: `linear-gradient(135deg, ${course.subject.colorHex} 0%, rgba(28,20,32,0.85) 130%)`,
+        backgroundImage: `radial-gradient(130% 110% at 100% 0%, ${course.subject.colorHex}59 0%, transparent 58%), linear-gradient(120deg, #ec3566 0%, #fa557f 45%, #f97316 100%)`,
       }}
     >
       <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/75">
@@ -37,19 +37,27 @@ function Cover({ course }: { course: CourseCardData }) {
 }
 
 export function CourseCard({ course }: { course: CourseCardData }) {
+  // ส่วนลดคำนวณจากราคาก่อนลด ใช้แสดงป้ายสีส้มบนการ์ด
+  const discountPercent =
+    course.comparePrice && course.comparePrice > course.price
+      ? Math.round((1 - course.price / course.comparePrice) * 100)
+      : 0;
+
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="card group overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lift"
+      className="card-interactive group overflow-hidden"
     >
-      <div className="h-40 overflow-hidden">
+      <div className="relative h-40 overflow-hidden">
         <Cover course={course} />
+        <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
       <div className="p-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="badge-brand">{course.subject.name}</span>
           <span className="badge-gray">{course.level}</span>
+          {discountPercent > 0 && <span className="badge-accent">ลด {discountPercent}%</span>}
         </div>
 
         <h3 className="mt-3 line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-brand-700">
