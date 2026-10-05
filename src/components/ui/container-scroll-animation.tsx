@@ -11,6 +11,7 @@ import { useScroll, useTransform, motion, useReducedMotion, type MotionValue } f
  * - ลดความสูงลงจากต้นฉบับ เพื่อไม่ให้หน้าแรกยาวเกินไป
  * - เปลี่ยนสีกรอบและเงาให้เข้ากับโทนชมพูส้มของสถาบัน
  * - ปรับขนาดกรอบให้เห็นทั้งใบในหน้าจอเดียว ไม่งั้นจะมองไม่ออกว่ากำลังเอียง
+ * - ใช้ min-h แทน h เพื่อให้กล่องยืดตามเนื้อหา ไม่ล้นออกไปทับส่วนที่อยู่ถัดลงไป
  * - รองรับ prefers-reduced-motion เครื่องที่ตั้งค่าลดการเคลื่อนไหวจะเอียงน้อยลงแทนที่จะนิ่งสนิท
  * - กำหนด offset ของการเลื่อนให้เริ่มนับตั้งแต่หัวหน้าเพจ
  */
@@ -46,7 +47,7 @@ export const ContainerScroll = ({
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[42rem] items-start justify-center p-2 md:h-[46rem] md:p-6"
+      className="relative flex min-h-[40rem] items-start justify-center px-2 py-4 md:min-h-[48rem] md:px-6 md:py-6"
     >
       <div className="relative w-full py-8 md:py-10" style={{ perspective: '1200px' }}>
         <Header translate={translate} titleComponent={titleComponent} />
@@ -90,7 +91,7 @@ export const Card = ({
         boxShadow:
           '0 0 #0000004d, 0 9px 20px rgba(27,20,24,0.18), 0 37px 37px rgba(27,20,24,0.12), 0 84px 50px rgba(236,53,102,0.10), 0 149px 60px rgba(249,115,22,0.05)',
       }}
-      className="mx-auto mt-8 h-[16rem] w-full max-w-4xl rounded-[26px] border-4 border-[#241c20] bg-[#151013] p-2 shadow-2xl md:h-[24rem] md:p-3"
+      className="mx-auto mt-8 h-[16rem] w-full max-w-5xl rounded-[26px] border-4 border-[#241c20] bg-[#151013] p-2 shadow-2xl md:h-[24rem] md:p-3"
     >
       <div className="h-full w-full overflow-hidden rounded-[18px] bg-white">{children}</div>
     </motion.div>

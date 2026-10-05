@@ -118,7 +118,7 @@ export default async function HomePage() {
             </ContainerScroll>
 
             {/* แถบสถิติ ย้ายลงมาใต้กรอบอุปกรณ์ เพื่อให้ส่วนหัวกระชับขึ้น */}
-            <dl className="mx-auto -mt-8 grid max-w-xl grid-cols-3 gap-4 pb-16 text-center sm:-mt-4">
+            <dl className="mx-auto grid max-w-xl grid-cols-3 gap-4 pb-16 pt-2 text-center">
               {[
                 ['คอร์สที่เปิดสอน', `${courseCount} คอร์ส`],
                 ['บทเรียนทั้งหมด', `${lessonCount} บท`],
